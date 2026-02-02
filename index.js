@@ -5,7 +5,7 @@ const cors = require('cors');
 const app = express();
 app.use(cors({
     origin: ["http://localhost:3000",
-        "https://react-ecommerce-project-manaswini-sasmals-projects.vercel.app/" ],
+        "https://react-ecommerce-project-manaswini-sasmals-projects.vercel.app" ],
     method:["GET", "POST", "PUT", "DELETE"],
     credentials: true
 }));
@@ -48,7 +48,7 @@ app.get('/api/products', async (req, res) => {
         const products = await Product.find();
         const formatted = products.map(p => ({
             ...p.toObject(),
-            id: p._id // React expects 'id', MongoDB gives '_id'
+            id: p._id 
         }));
         res.json(formatted);
     } catch (err) {
@@ -56,15 +56,19 @@ app.get('/api/products', async (req, res) => {
     }
 });
 
-// GET Single Product - Fixes the "undefined" page
-// Add this below your /api/products route
+// GET Single Product 
+
+
 app.get("/api/singleproduct", async (req, res) => {
     try {
-        const id = req.query.id; // It looks for ?id=6980...
-        const product = await Product.findOne({ id: id }); 
+        const id = req.query.id; 
+        
+       
+        const product = await Product.findOne({ _id: id }); 
         
         if (product) {
-            res.status(200).json(product);
+            // Also ensure the frontend gets an 'id' field it expects
+            res.status(200).json({ ...product.toObject(), id: product._id });
         } else {
             res.status(404).json({ message: "Product not found" });
         }
