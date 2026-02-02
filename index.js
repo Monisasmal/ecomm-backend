@@ -51,15 +51,19 @@ app.get('/api/products', async (req, res) => {
 });
 
 // GET Single Product - Fixes the "undefined" page
-app.get('/api/singleproduct/:id', async (req, res) => {
+// Add this below your /api/products route
+app.get("/api/singleproduct", async (req, res) => {
     try {
-        const product = await Product.findById(req.params.id);
-        if (!product) return res.status(404).json({ message: "Not found" });
+        const id = req.query.id; // It looks for ?id=6980...
+        const product = await Product.findOne({ id: id }); 
         
-        const formatted = { ...product.toObject(), id: product._id };
-        res.json(formatted);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+        if (product) {
+            res.status(200).json(product);
+        } else {
+            res.status(404).json({ message: "Product not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 
