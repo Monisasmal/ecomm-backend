@@ -3,14 +3,20 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
+// app.use(cors({
+//     origin: ["http://localhost:3000",
+//         "https://react-ecommerce-project-manaswini-sasmals-projects.vercel.app/" ],
+//     method:["GET", "POST", "PUT", "DELETE"],
+//     credentials: true
+// }));
+
+// In your backend folder index.js
 app.use(cors({
-    origin: "https://react-ecommerce-project-manaswini-sasmals-projects.vercel.app/" // Replace with your ACTUAL Vercel link
+  origin: ["http://localhost:3000"] // This tells Render to trust your computer
 }));
 app.use(express.json());
 
-// 1. PASTE YOUR COPIED LINK HERE
-// Important: Replace <db_password> with the password for 'manaswinisasmal5597'
-// I added /SasmalStore before the '?' to separate this from your other project.
+
 const mongoURI = "mongodb+srv://manaswinisasmal5597:Manaswini5597@tasknest.qgtgrph.mongodb.net/SasmalStore?retryWrites=true&w=majority&appName=TaskNest";
 
 mongoose.connect(mongoURI)
